@@ -6,7 +6,7 @@
 
 [Script]
 # 首页横幅：清空 getAppConfigs 返回中的 banner 列表，保留其他配置
-http-response ^https?:\/\/appengine\.wmpvp\.com\/steamcn\/app\/common\/getAppConfigs\? requires-body=1,script-path=./scripts/perfectworld_banner.js,timeout=10,tag=完美世界-横幅净化
+http-response ^https?:\/\/appengine\.wmpvp\.com\/steamcn\/app\/common\/getAppConfigs\? requires-body=1,script-path=https://raw.githubusercontent.com/87Bond/perfectworld/main/perfectworld_banner.js,timeout=10,tag=完美世界-横幅净化
 
 [URL Rewrite]
 # 如确认 cloud-config-service.rtc.aliyuncs.com 仅用于开屏广告，可去掉注释启用拦截
