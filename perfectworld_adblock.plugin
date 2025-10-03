@@ -9,9 +9,17 @@
 ^https?:\/\/(?:api|cms)\.pwesports\.cn\/(?:api\/)?(?:v\d\/)?(?:boot|launch|open|splash|startup)(?:_[a-z]+)?\/? url reject-dict
 # 拦截开屏广告素材
 ^https?:\/\/(?:ad|mkt|static)\.pwesports\.cn\/.+\.(?:png|jpe?g|gif|mp4)$ url reject-img
+# 针对抓包反馈的 esportsadmin 素材目录
+^https?:\/\/static\.pwesports\.cn\/esportsadmin\/.*default_avatar\d+\.png$ url reject-img
+
 # 拦截首页顶部横幅及运营位
 ^https?:\/\/(?:api|cms)\.pwesports\.cn\/(?:api\/)?(?:v\d\/)?(?:banner|operation|marketing|top|headline)[^\n]* url reject-dict
 ^https?:\/\/res\.pwesports\.cn\/operation\/banner\/.* url reject-img
+
+# wmpvp 运营域名：疑似开屏/活动物料
+^https?:\/\/appactivity\.wmpvp\.com\/.*(?:launch|startup|activity|banner|ad)[^\n]* url reject-dict
+^https?:\/\/appengine\.wmpvp\.com\/.*(?:launch|startup|activity|banner|ad)[^\n]* url reject-dict
+
 # 兜底：广告或埋点配置
 ^https?:\/\/(?:config|log|trk)\.pwesports\.cn\/.+(?:ad|ads|advert|track|report)[^\n]* url reject-dict
 ^https?:\/\/(?:api|cms)\.pwesports\.cn\/.+(?:adConfig|adconfig|adsense)[^\n]* url reject-dict
@@ -20,4 +28,4 @@
 # 当前暂无脚本需求，如需本地化屏蔽可在此追加
 
 [MITM]
-hostname = api.pwesports.cn,cms.pwesports.cn,ad.pwesports.cn,mkt.pwesports.cn,static.pwesports.cn,res.pwesports.cn,config.pwesports.cn,log.pwesports.cn,trk.pwesports.cn
+hostname = api.pwesports.cn,cms.pwesports.cn,ad.pwesports.cn,mkt.pwesports.cn,static.pwesports.cn,res.pwesports.cn,config.pwesports.cn,log.pwesports.cn,trk.pwesports.cn,appactivity.wmpvp.com,appengine.wmpvp.com,wss-im.wmpvp.com
