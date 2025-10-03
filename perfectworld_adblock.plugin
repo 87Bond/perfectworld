@@ -10,7 +10,7 @@ http-response ^https?:\/\/appengine\.wmpvp\.com\/steamcn\/app\/common\/getAppCon
 
 [URL Rewrite]
 # 如确认 cloud-config-service.rtc.aliyuncs.com 仅用于开屏广告，可去掉注释启用拦截
-# ^https?:\/\/cloud-config-service\.rtc\.aliyuncs\.com\/.* url reject
+^https?:\/\/cloud-config-service\.rtc\.aliyuncs\.com\/.* url reject
 
 [MITM]
 hostname = appengine.wmpvp.com,cloud-config-service.rtc.aliyuncs.com
