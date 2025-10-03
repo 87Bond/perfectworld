@@ -1,36 +1,16 @@
 #!name=完美世界电竞净化
-#!desc=去除完美世界电竞 App 开屏与首页广告
+#!desc=移除完美世界电竞 App 首页横幅广告
 #!author=Codex
 #!homepage=https://example.com/loon/perfectworld
 #!icon=https://example.com/icon/perfectworld.png
 
-[URL Rewrite]
-# 拦截启动与开屏广告相关配置
-^https?:\/\/(?:api|cms)\.pwesports\.cn\/(?:api\/)?(?:v\d\/)?(?:boot|launch|open|splash|startup)(?:_[a-z]+)?\/? url reject-dict
-# 拦截开屏广告素材（含 esportsadmin 目录）
-^https?:\/\/(?:ad|mkt|static)\.pwesports\.cn\/.*\.(?:png|jpe?g|gif|mp4)$ url reject-img
-
-# 针对抓包反馈：默认头像 / Banner 素材
-^https?:\/\/static\.pwesports\.cn\/esportsadmin\/.*default_avatar\d+\.png$ url reject-img
-^https?:\/\/static\.pwesports\.cn\/esportsadmin\/.*banner.*\.(?:png|jpe?g|gif|mp4)$ url reject-img
-
-# 拦截首页顶部横幅及运营位（接口 + CDN）
-^https?:\/\/(?:api|cms)\.pwesports\.cn\/(?:api\/)?(?:v\d\/)?(?:banner|operation|marketing|top|headline)[^\n]* url reject-dict
-^https?:\/\/res\.pwesports\.cn\/(?:operation|banner)\/.* url reject-img
-
-# wmpvp 运营域名：疑似开屏 / 活动物料
-^https?:\/\/appactivity\.wmpvp\.com\/.*(?:launch|startup|activity|banner|ad)[^\n]* url reject-dict
-^https?:\/\/appengine\.wmpvp\.com\/.*(?:launch|startup|activity|banner|ad|operation)[^\n]* url reject-dict
-# 拦截 steam 社区广告数据（根据抓包路径 getPostById）
-^https?:\/\/appengine\.wmpvp\.com\/steamcn\/community\/post\/getPostById[^\n]* url reject-dict
-
-# 兜底：广告或埋点配置 / 数据上报
-^https?:\/\/applog\.pwesports\.cn[^\n]* url reject-dict
-^https?:\/\/(?:config|log|trk)\.pwesports\.cn\/.+(?:ad|ads|advert|track|report)[^\n]* url reject-dict
-^https?:\/\/(?:api|cms)\.pwesports\.cn\/.+(?:adConfig|adconfig|adsense)[^\n]* url reject-dict
-
 [Script]
-# 当前暂无脚本需求，如需本地化屏蔽可在此追加
+# 首页横幅：清空 getAppConfigs 返回中的 banner 列表，保留其他配置
+http-response ^https?:\/\/appengine\.wmpvp\.com\/steamcn\/app\/common\/getAppConfigs\? requires-body=1,script-path=./scripts/perfectworld_banner.js,timeout=10,tag=完美世界-横幅净化
+
+[URL Rewrite]
+# 如确认 cloud-config-service.rtc.aliyuncs.com 仅用于开屏广告，可去掉注释启用拦截
+# ^https?:\/\/cloud-config-service\.rtc\.aliyuncs\.com\/.* url reject
 
 [MITM]
-hostname = api.pwesports.cn,cms.pwesports.cn,ad.pwesports.cn,mkt.pwesports.cn,static.pwesports.cn,res.pwesports.cn,config.pwesports.cn,log.pwesports.cn,trk.pwesports.cn,applog.pwesports.cn,appactivity.wmpvp.com,appengine.wmpvp.com,wss-im.wmpvp.com
+hostname = appengine.wmpvp.com,cloud-config-service.rtc.aliyuncs.com
