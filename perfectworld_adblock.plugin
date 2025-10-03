@@ -1,0 +1,23 @@
+#!name=完美世界电竞净化
+#!desc=去除完美世界电竞 App 开屏与首页广告
+#!author=Codex
+#!homepage=https://example.com/loon/perfectworld
+#!icon=https://example.com/icon/perfectworld.png
+
+[URL Rewrite]
+# 拦截启动与开屏广告相关配置
+^https?:\/\/(?:api|cms)\.pwesports\.cn\/(?:api\/)?(?:v\d\/)?(?:boot|launch|open|splash|startup)(?:_[a-z]+)?\/? url reject-dict
+# 拦截开屏广告素材
+^https?:\/\/(?:ad|mkt|static)\.pwesports\.cn\/.+\.(?:png|jpe?g|gif|mp4)$ url reject-img
+# 拦截首页顶部横幅及运营位
+^https?:\/\/(?:api|cms)\.pwesports\.cn\/(?:api\/)?(?:v\d\/)?(?:banner|operation|marketing|top|headline)[^\n]* url reject-dict
+^https?:\/\/res\.pwesports\.cn\/operation\/banner\/.* url reject-img
+# 兜底：广告或埋点配置
+^https?:\/\/(?:config|log|trk)\.pwesports\.cn\/.+(?:ad|ads|advert|track|report)[^\n]* url reject-dict
+^https?:\/\/(?:api|cms)\.pwesports\.cn\/.+(?:adConfig|adconfig|adsense)[^\n]* url reject-dict
+
+[Script]
+# 当前暂无脚本需求，如需本地化屏蔽可在此追加
+
+[MITM]
+hostname = api.pwesports.cn,cms.pwesports.cn,ad.pwesports.cn,mkt.pwesports.cn,static.pwesports.cn,res.pwesports.cn,config.pwesports.cn,log.pwesports.cn,trk.pwesports.cn
