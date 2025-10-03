@@ -1,0 +1,16 @@
+#!name=完美世界 启动页去广告（试验）
+#!desc=针对完美世界 / Wanmei App 的开屏广告过滤（请先调试再常用）
+#!author=assistant
+[URL Rewrite]
+# 宽口径阻断 —— 激进：直接返回 200 空响应（调试阶段可用）
+^https?:\/\/.*(wanmei|perfectworld|pmgt|pwgame|wanmei-game|perfectworldgames).*\/.*(splash|startup|launch|open|start|ad|advert).*$ reject-200
+# 若开屏素材直接走 CDN（图片/视频），匹配常见媒体后缀再阻断
+^https?:\/\/.*(wanmei|perfectworld|cdn).*\/.*\.(mp4|webm|m3u8|jpg|jpeg|png|webp)$ reject-200
+
+[Script]
+# 温和方式：脚本尝试修改 JSON，将广告字段清空或移除，优先推荐
+http-response ^https?:\/\/.*(wanmei|perfectworld|pmgt|pwgame|wanmei-game|perfectworldgames).*\/.*(splash|startup|launch|open|start|ad|advert).* requires-body=1,script-path=https://raw.githubusercontent.com/87Bond/perfectworld/main/wm_splash_skip.js
+
+[MITM]
+# 调试阶段把这些域名加入 MITM 白名单（根据实际 Data 里看到的 Hostname 补充/收窄）
+hostname = app.wanmei.com,api.wanmei.com,wanmei-game.perfectworld.com,*.wanmei.com,*.perfectworld.com,cdn.wanmei.com,cdn.perfectworld.com
