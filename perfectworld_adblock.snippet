@@ -1,0 +1,26 @@
+# Perfect World Esports app ad blocking (Loon snippet)
+# version: 2024-06-09
+# Purpose: block the splash screen promotion and the home horizontal banner.
+# Update the domains/patterns if packet captures show different endpoints.
+
+# ===== Splash / launch ads =====
+# Block configuration and media fetches for the launch screen.
+^https?:\/\/(?:api|cms)\.pwesports\.cn\/(?:api\/)?(?:v\d\/)?(?:boot|launch|open|splash|startup)(?:_[a-z]+)?\/? url reject-dict
+^https?:\/\/(?:ad|mkt|static)\.pwesports\.cn\/.+\.(?:png|jpe?g|gif|mp4)$ url reject-img
+
+# ===== Home top banner =====
+# Block the horizontal banner and marketing modules in the first screen.
+^https?:\/\/(?:api|cms)\.pwesports\.cn\/(?:api\/)?(?:v\d\/)?(?:banner|operation|marketing|top|headline)[^\n]* url reject-dict
+^https?:\/\/res\.pwesports\.cn\/operation\/banner\/.* url reject-img
+
+# ===== Fallback: general ad / tracking configs =====
+# Avoid re-fetching ad definitions or tracking beacons.
+^https?:\/\/(?:config|log|trk)\.pwesports\.cn\/.+(?:ad|ads|advert|track|report)[^\n]* url reject-dict
+^https?:\/\/(?:api|cms)\.pwesports\.cn\/.+(?:adConfig|adconfig|adsense)[^\n]* url reject-dict
+
+# ===== Optional extra domains =====
+# Uncomment and adapt if captures show ads hosted under Perfect World / PWrd domains.
+# ^https?:\/\/.*\.perfectworld\.com\.cn\/.+(?:ad|ads|banner|splash)[^\n]* url reject-dict
+# ^https?:\/\/.*\.pwrd\.com\/.+(?:ad|ads|banner|splash)[^\n]* url reject-dict
+
+hostname = api.pwesports.cn,cms.pwesports.cn,ad.pwesports.cn,mkt.pwesports.cn,static.pwesports.cn,res.pwesports.cn,config.pwesports.cn,log.pwesports.cn,trk.pwesports.cn
