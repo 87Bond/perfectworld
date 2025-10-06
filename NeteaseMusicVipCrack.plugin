@@ -1,0 +1,17 @@
+#!name=NetEaseMusic VIP Crack (yqc007)
+#!desc=网易云音乐解锁黑胶会员（请求头脚本）；仅供学习交流
+#!author=Hausd0rff / yqc007
+#!homepage=https://github.com/yqc007/QuantumultX
+#!icon=https://raw.githubusercontent.com/deezertidal/private/main/icons/https.png
+
+[Script]
+# 网易云——修改请求头（原脚本是 Quantumult X 的 script-request-header）
+NeteaseMusicVipCrack = type=http-request,pattern=^https?:\/\/.*\/eapi\/(music|s(ong|ingle|earch)|album|link|zone|content|p(laylist|rivilege|laymode|urchased)|r(esni|nca)che|vip(auth|pro|(new)?center)|music-vip-membership).+,requires-body=0,timeout=10,script-path=https://raw.githubusercontent.com/yqc007/QuantumultX/master/NeteaseMusicVipCrack.js
+
+[URL Rewrite]
+# 屏蔽上报/广告（原 QX: reject-array）
+^https?:\/\/.*\/api\/clientlog\/encrypt\/upload - reject-array
+^https?:\/\/.*\/eapi\/ad\/.+ - reject-array
+
+[MITM]
+hostname = *.music.163.com,115.236.121.4,115.236.118.34,115.238.119.68,183.136.182.19
