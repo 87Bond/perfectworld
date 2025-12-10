@@ -9,32 +9,33 @@ try {
   if (obj && typeof obj === 'object') {
     // 如果有 data，优先处理广告相关字段
     if (obj.data && typeof obj.data === 'object') {
-      // 常见广告字段名
-      delete obj.data.ad;
-      delete obj.data.ads;
-      delete obj.data.splash;
-      delete obj.data.advert;
-      delete obj.data.launchAd;
-      delete obj.data.openAd;
+      // 常见广告字段名 - 批量删除以减少代码重复
+      const adFields = ['ad', 'ads', 'splash', 'advert', 'launchAd', 'openAd', 'adsInfo', 'ad_list', 'launch_ad', 'banner', 'popup'];
+      for (let i = 0; i < adFields.length; i++) {
+        if (obj.data[adFields[i]]) delete obj.data[adFields[i]];
+      }
+      
       // 清空可能的数组
       if (Array.isArray(obj.data.items)) obj.data.items = [];
       if (Array.isArray(obj.data.list)) obj.data.list = [];
+      
+      // 优化模块过滤 - 缓存字符串操作结果
       if (Array.isArray(obj.data.modules)) {
         obj.data.modules = obj.data.modules.filter(m => {
-          let t = (m && (m.type || m.module_type || m.name) || '').toString().toLowerCase();
-          return !(t.includes('ad') || t.includes('splash') || t.includes('launch') || t.includes('open'));
+          // 保留 null/undefined 模块以匹配原始行为
+          // 原始代码: (null && ...) || '' → '' → 不包含 'ad' → 保留
+          if (!m) return true;
+          const typeStr = (m.type || m.module_type || m.name || '').toString().toLowerCase();
+          return !(typeStr.includes('ad') || typeStr.includes('splash') || typeStr.includes('launch') || typeStr.includes('open'));
         });
       }
-      // 有时广告字段在 nested.fields 中，尝试删除常见键
-      ['adsInfo','ad_list','launch_ad','banner','popup'].forEach(k => {
-        if (obj.data[k]) delete obj.data[k];
-      });
     }
 
     // 如果顶层直接包含广告信息，亦尝试清空
-    ['ad','ads','splash','advert','adInfo'].forEach(k => {
-      if (obj[k]) delete obj[k];
-    });
+    const topAdFields = ['ad', 'ads', 'splash', 'advert', 'adInfo'];
+    for (let i = 0; i < topAdFields.length; i++) {
+      if (obj[topAdFields[i]]) delete obj[topAdFields[i]];
+    }
   }
 
   $done({ body: JSON.stringify(obj) });

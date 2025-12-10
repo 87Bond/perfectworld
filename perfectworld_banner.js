@@ -5,12 +5,17 @@ let body = $response.body;
 try {
   const data = JSON.parse(body);
   if (Array.isArray(data?.result)) {
-    data.result.forEach((section) => {
-      if (Array.isArray(section?.banner)) {
+    // 追踪是否有修改，避免不必要的序列化
+    let modified = false;
+    for (let i = 0; i < data.result.length; i++) {
+      const section = data.result[i];
+      if (section && Array.isArray(section.banner)) {
         section.banner = [];
+        modified = true;
       }
-    });
-    $done({ body: JSON.stringify(data) });
+    }
+    // 只有在实际修改时才重新序列化
+    $done({ body: modified ? JSON.stringify(data) : body });
   } else {
     $done({ body });
   }
