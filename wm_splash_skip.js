@@ -23,6 +23,7 @@ try {
       if (Array.isArray(obj.data.modules)) {
         obj.data.modules = obj.data.modules.filter(m => {
           // 保留 null/undefined 模块以匹配原始行为
+          // 原始代码: (null && ...) || '' → '' → 不包含 'ad' → 保留
           if (!m) return true;
           const typeStr = (m.type || m.module_type || m.name || '').toString().toLowerCase();
           return !(typeStr.includes('ad') || typeStr.includes('splash') || typeStr.includes('launch') || typeStr.includes('open'));
