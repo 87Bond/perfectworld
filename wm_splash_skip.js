@@ -9,10 +9,10 @@ try {
   if (obj && typeof obj === 'object') {
     // 如果有 data，优先处理广告相关字段
     if (obj.data && typeof obj.data === 'object') {
-      // 常见广告字段名 - 批量删除以减少属性访问
+      // 常见广告字段名 - 批量删除以减少代码重复
       const adFields = ['ad', 'ads', 'splash', 'advert', 'launchAd', 'openAd', 'adsInfo', 'ad_list', 'launch_ad', 'banner', 'popup'];
       for (let i = 0; i < adFields.length; i++) {
-        delete obj.data[adFields[i]];
+        if (obj.data[adFields[i]]) delete obj.data[adFields[i]];
       }
       
       // 清空可能的数组
@@ -32,7 +32,7 @@ try {
     // 如果顶层直接包含广告信息，亦尝试清空
     const topAdFields = ['ad', 'ads', 'splash', 'advert', 'adInfo'];
     for (let i = 0; i < topAdFields.length; i++) {
-      delete obj[topAdFields[i]];
+      if (obj[topAdFields[i]]) delete obj[topAdFields[i]];
     }
   }
 
