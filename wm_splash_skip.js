@@ -22,6 +22,7 @@ try {
       // 优化模块过滤 - 缓存字符串操作结果
       if (Array.isArray(obj.data.modules)) {
         obj.data.modules = obj.data.modules.filter(m => {
+          // 保留 null/undefined 模块以匹配原始行为
           if (!m) return true;
           const typeStr = (m.type || m.module_type || m.name || '').toString().toLowerCase();
           return !(typeStr.includes('ad') || typeStr.includes('splash') || typeStr.includes('launch') || typeStr.includes('open'));

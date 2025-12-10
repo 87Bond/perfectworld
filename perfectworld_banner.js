@@ -9,6 +9,7 @@ try {
     let modified = false;
     for (let i = 0; i < data.result.length; i++) {
       const section = data.result[i];
+      // 只有在 banner 存在且非空时才清空，避免无效的修改标记
       if (section && Array.isArray(section.banner) && section.banner.length > 0) {
         section.banner = [];
         modified = true;
